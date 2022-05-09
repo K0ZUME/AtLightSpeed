@@ -1,0 +1,40 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Player : MonoBehaviour
+{
+
+    public float playerSpeed;
+    private Rigidbody2D rb;
+    private Vector2 playerDirection;
+    private float currentScore;
+    private float previousScore;
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
+
+    void Update()
+    {
+        float directionY = Input.GetAxisRaw("Vertical");
+        playerDirection = new Vector2(0, directionY).normalized;
+    }
+
+    private void FixedUpdate()
+    {
+        rb.velocity = new Vector2(0, playerDirection.y * playerSpeed);
+    }
+
+    public void UpdateScore(float score) 
+    {
+        currentScore = score;
+
+        if (Mathf.Floor(previousScore) != Mathf.Floor(currentScore))
+        {
+            playerSpeed += currentScore / 22;
+            previousScore = currentScore;
+        }
+    }
+}
